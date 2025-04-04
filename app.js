@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
       { selector: 'edge', style: { 'width': 2, 'line-color': '#FFF', 'target-arrow-shape': 'triangle' } },
       { selector: 'edge.branch', style: { 'line-style': 'dashed', 'line-color': '#CCC' } }
     ],
-    layout: { name: 'dagre', rankDir: 'TB' }
+    layout: { name: 'grid' }
   });
 
   cy.on('tap', 'node', (evt) => {
@@ -27,6 +27,6 @@ document.addEventListener('DOMContentLoaded', () => {
       { data: { id: newId, label: 'New Branch' }, classes: 'grok' },
       { data: { source: evt.target.id(), target: newId }, classes: 'branch' }
     ]);
-    cy.layout({ name: 'dagre', rankDir: 'TB' }).run();
+    cy.layout({ name: 'grid' }).run();
   });
 });
