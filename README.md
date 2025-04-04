@@ -6,13 +6,14 @@ Welcome to **DAGGER**—the Directed Acyclic Graph (DAG) interface that turns li
 
 This is a scrappy Mini MVP, built to launch early and learn fast. It’s a top-to-bottom DAG UI with nodes and edges, powered by Cytoscape.js. We’re just getting started—LLM integration and state persistence are coming soon!
 
-## 📸 The Futuristic Logo
+## 📸 The Futuristic UI 😉
+![DAGGER UI Screenshot](screens/screen 001.png)
 Inspired by my 1995 graph layout project GAZER (General Algorithms for Zapping Extensive Relations—lol), DAGGER’s logo is a glowing DAG graph with a sleek dagger piercing through, illuminated by a high-tech drone flying overhead. It’s a nod to the past, but built for the future. 🛸 (Yes, it’s a bit rough around the edges—we’ll polish it later!)
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js v18.20.7
+- Node.js v18.20.7 (yes, I am usind an older one for compatibility issues with CotoagaDAO crypto and smart contract stuff)
 - npm 10.8.1
 - A browser (Safari, Chrome, etc.)
 
@@ -38,15 +39,15 @@ Inspired by my 1995 graph layout project GAZER (General Algorithms for Zapping E
 ## 🌟 Features
 
 - Vertical DAG layout (top-to-bottom) with nodes and edges.
-- Click a node to spawn a branch.
-- Drag to reconnect branches (WIP).
-- Dark theme (#1A1A1A background) for that futuristic vibe.
+- Click + to continue the main topic thread, or to remerge with the main topic thread
+- Click # to spawn a branch or a sub-thread.
+- Dark theme (#1A1A1A background) for that futuristic vibe. 🤣
 
 ## 📅 What's Next
 
 - Integrate LLMs for dynamic chat responses.
 - Add state persistence with Node.js.
-- Polish the UI and logo (we promise!).
+- Polish the UI and logo (I promise! You know, I' a visual guy).
 
 ## 📜 License
 
@@ -59,3 +60,7 @@ This is an early MVP, so expect some rough edges! Try it out, break it, and let 
 ## 😜 Stay Tuned
 
 More features are coming faster than a drone delivering your favorite sci-fi novel on a DAG-shaped hoverboard--stay tuned, graph nerds! ;-)
+
+## 🤖 AI is so freaking cool! 😎
+
+Finaly the nerd in me is reborn 🤓
