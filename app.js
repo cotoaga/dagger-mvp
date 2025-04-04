@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const cy = cytoscape({
     container: document.getElementById('cy'),
     elements: [
-      { data: { id: 'root', text: 'paste your prompt in here; click "+" to add a node below to paste LLM\'s answer inside; click "#" to branch into a sub-thread' } }
+      { data: { id: '1', title: '1', hasMainChild: false } }
     ],
     style: [
       {
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
           'width': '200px',
           'height': '100px',
           'background-color': 'transparent',
-          'label': '', // We’ll use HTML for the label
+          'label': '',
           'text-valign': 'center',
           'text-halign': 'center'
         }
@@ -31,21 +31,54 @@ document.addEventListener('DOMContentLoaded', () => {
           'line-color': '#CCC'
         }
       }
-    ],
-    layout: { name: 'grid' }
+    ]
   });
+
+  // Custom layout to position nodes
+  function customLayout() {
+    const nodes = cy.nodes();
+    const mainThread = [];
+    const subThreads = {};
+
+    // Organize nodes into main thread and sub-threads
+    nodes.forEach(node => {
+      const id = node.id();
+      if (id.includes('.')) {
+        const parentId = id.split('.')[0];
+        if (!subThreads[parentId]) subThreads[parentId] = [];
+        subThreads[parentId].push(node);
+      } else {
+        mainThread.push(node);
+      }
+    });
+
+    // Position main thread nodes vertically
+    mainThread.forEach((node, index) => {
+      node.position({ x: 300, y: 100 + index * 150 });
+    });
+
+    // Position sub-thread nodes to the right and below their parent
+    Object.keys(subThreads).forEach(parentId => {
+      const parent = cy.getElementById(parentId);
+      const parentPos = parent.position();
+      subThreads[parentId].forEach((subNode, index) => {
+        subNode.position({ x: parentPos.x + 250 * (index + 1), y: parentPos.y + 100 });
+      });
+    });
+  }
 
   // Function to render node content (text field and buttons)
   function renderNodeContent(node) {
     const div = document.createElement('div');
     div.className = 'node-container';
+    div.setAttribute('data-id', node.id());
     div.style.position = 'absolute';
-    div.style.left = node.renderedPosition('x') - 100 + 'px'; // Center the div
+    div.style.left = node.renderedPosition('x') - 100 + 'px';
     div.style.top = node.renderedPosition('y') - 50 + 'px';
 
     const textarea = document.createElement('textarea');
     textarea.className = 'node-textarea';
-    textarea.value = node.data('text') || '';
+    textarea.value = node.data('text') || node.data('title');
     textarea.addEventListener('input', (e) => {
       node.data('text', e.target.value);
     });
@@ -56,25 +89,33 @@ document.addEventListener('DOMContentLoaded', () => {
     const addButton = document.createElement('button');
     addButton.className = 'node-button';
     addButton.innerText = '+';
+    addButton.disabled = node.data('hasMainChild'); // Disable if already has a main child
     addButton.addEventListener('click', () => {
-      const newId = `n${Date.now()}`;
+      if (node.data('hasMainChild')) return; // Prevent adding more than one main child
+      const parentId = node.id();
+      const newId = parseInt(parentId) + 1;
       cy.add([
-        { data: { id: newId, text: 'LLM\'s answer' } },
-        { data: { source: node.id(), target: newId } }
+        { data: { id: newId.toString(), title: newId.toString(), hasMainChild: false } },
+        { data: { source: parentId, target: newId.toString() } }
       ]);
-      cy.layout({ name: 'grid' }).run();
+      node.data('hasMainChild', true);
+      addButton.disabled = true;
+      customLayout();
     });
 
     const branchButton = document.createElement('button');
     branchButton.className = 'node-button';
     branchButton.innerText = '#';
     branchButton.addEventListener('click', () => {
-      const newId = `n${Date.now()}`;
+      const parentId = node.id();
+      const subNodes = cy.nodes().filter(n => n.id().startsWith(parentId + '.'));
+      const subIndex = subNodes.length + 1;
+      const newId = `${parentId}.${subIndex}`;
       cy.add([
-        { data: { id: newId, text: 'Sub-thread' } },
-        { data: { source: node.id(), target: newId }, classes: 'branch' }
+        { data: { id: newId, title: newId, hasMainChild: false } },
+        { data: { source: parentId, target: newId }, classes: 'branch' }
       ]);
-      cy.layout({ name: 'grid' }).run();
+      customLayout();
     });
 
     buttonsDiv.appendChild(addButton);
@@ -105,17 +146,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // Render HTML content for all nodes
   cy.nodes().forEach(node => renderNodeContent(node));
 
-  // Re-render on layout changes
-  cy.on('layoutstop', () => {
-    cy.nodes().forEach(node => {
-      const div = document.querySelector(`.node-container[data-id="${node.id()}"]`);
-      if (div) {
-        div.style.left = node.renderedPosition('x') - 100 + 'px';
-        div.style.top = node.renderedPosition('y') - 50 + 'px';
-      }
-    });
-  });
-
   // Add new nodes with HTML content
   cy.on('add', 'node', (evt) => {
     const node = evt.target;
@@ -123,4 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
       renderNodeContent(node);
     }
   });
+
+  // Initial layout
+  customLayout();
 });
