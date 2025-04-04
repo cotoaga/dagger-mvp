@@ -7,7 +7,9 @@ Welcome to **DAGGER**—the Directed Acyclic Graph (DAG) interface that turns li
 This is a scrappy Mini MVP, built to launch early and learn fast. It’s a top-to-bottom DAG UI with nodes and edges, powered by Cytoscape.js. We’re just getting started—LLM integration and state persistence are coming soon!
 
 ## 📸 The Futuristic UI 😉
-![DAGGER UI Screenshot](screens/screen 001.png)
+
+![DAGGER UI Screenshot](screens/screen%20001.png)
+
 Inspired by my 1995 graph layout project GAZER (General Algorithms for Zapping Extensive Relations—lol), DAGGER’s logo is a glowing DAG graph with a sleek dagger piercing through, illuminated by a high-tech drone flying overhead. It’s a nod to the past, but built for the future. 🛸 (Yes, it’s a bit rough around the edges—we’ll polish it later!)
 
 ## 🚀 Getting Started
