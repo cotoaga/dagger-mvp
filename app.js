@@ -2,14 +2,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const cy = cytoscape({
     container: document.getElementById('cy'),
     elements: [
-      // Main thread nodes
       { data: { id: 'root', label: 'Chat with Grok' }, classes: 'grok' },
       { data: { id: 'n1', label: 'Subtopic Structure' }, classes: 'user' },
       { data: { id: 'n2', label: 'Diagram Choice' }, classes: 'user' },
       { data: { id: 'n3', label: 'DAG!' }, classes: 'grok' },
-      // Branch nodes
       { data: { id: 'n2.1', label: 'Mind Map' }, classes: 'grok' },
-      // Edges
       { data: { source: 'root', target: 'n1' } },
       { data: { source: 'n1', target: 'n2' } },
       { data: { source: 'n2', target: 'n3' } },
@@ -21,10 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
       { selector: 'edge', style: { 'width': 2, 'line-color': '#FFF', 'target-arrow-shape': 'triangle' } },
       { selector: 'edge.branch', style: { 'line-style': 'dashed', 'line-color': '#CCC' } }
     ],
-    layout: { name: 'dagre', rankDir: 'TB' } // Top-to-bottom
+    layout: { name: 'dagre', rankDir: 'TB' }
   });
 
-  // Click to add branch (placeholder)
   cy.on('tap', 'node', (evt) => {
     const newId = `n${Date.now()}`;
     cy.add([
