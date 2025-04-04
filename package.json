@@ -1,5 +1,6 @@
 {
   "name": "dagger-mvp",
+  "description": "DAGGER Mini MVP - A DAG interface for LLM chats",
   "version": "1.0.0",
   "description": "# DAGGER Mini MVP 🗡️",
   "main": "app.js",
@@ -10,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cytoscape": "^3.31.2",
+    "cytoscape": "^3.30.2",
     "cytoscape-dagre": "^2.5.0"
   }
 }
