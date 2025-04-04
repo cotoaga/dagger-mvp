@@ -1,0 +1,21 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log
+
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# TextMate temp files
+*.tmproj
+*.tmproject
+
+# Local server temp files
+*.log
+
+# iCloud drive artifacts
+*.icloud
+
+# Ignore package-lock.json if you don’t want to commit it (optional)
+# package-lock.json
