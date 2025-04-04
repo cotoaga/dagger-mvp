@@ -1,5 +1,47 @@
+body {
+  margin: 0;
+  padding: 0;
+}
 #cy {
   width: 100%;
   height: 100vh;
   background: #1A1A1A;
+}
+.node-container {
+  width: 200px;
+  height: 100px;
+  background: #333;
+  border: 1px solid #FFF;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.node-textarea {
+  width: 180px;
+  height: 50px;
+  background: #444;
+  color: #FFF;
+  border: none;
+  resize: none;
+  font-size: 12px;
+  padding: 5px;
+}
+.node-buttons {
+  position: absolute;
+  bottom: 5px;
+  display: flex;
+  gap: 5px;
+}
+.node-button {
+  width: 20px;
+  height: 20px;
+  background: #666;
+  color: #FFF;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px;
 }

@@ -2,31 +2,125 @@ document.addEventListener('DOMContentLoaded', () => {
   const cy = cytoscape({
     container: document.getElementById('cy'),
     elements: [
-      { data: { id: 'root', label: 'Chat with Grok' }, classes: 'grok' },
-      { data: { id: 'n1', label: 'Subtopic Structure' }, classes: 'user' },
-      { data: { id: 'n2', label: 'Diagram Choice' }, classes: 'user' },
-      { data: { id: 'n3', label: 'DAG!' }, classes: 'grok' },
-      { data: { id: 'n2.1', label: 'Mind Map' }, classes: 'grok' },
-      { data: { source: 'root', target: 'n1' } },
-      { data: { source: 'n1', target: 'n2' } },
-      { data: { source: 'n2', target: 'n3' } },
-      { data: { source: 'n2', target: 'n2.1' }, classes: 'branch' }
+      { data: { id: 'root', text: 'paste your prompt in here; click "+" to add a node below to paste LLM\'s answer inside; click "#" to branch into a sub-thread' } }
     ],
     style: [
-      { selector: 'node.grok', style: { 'background-color': '#00FF99', 'label': 'data(label)', 'color': '#FFF' } },
-      { selector: 'node.user', style: { 'background-color': '#FFCC00', 'label': 'data(label)', 'color': '#FFF' } },
-      { selector: 'edge', style: { 'width': 2, 'line-color': '#FFF', 'target-arrow-shape': 'triangle' } },
-      { selector: 'edge.branch', style: { 'line-style': 'dashed', 'line-color': '#CCC' } }
+      {
+        selector: 'node',
+        style: {
+          'width': '200px',
+          'height': '100px',
+          'background-color': 'transparent',
+          'label': '', // We’ll use HTML for the label
+          'text-valign': 'center',
+          'text-halign': 'center'
+        }
+      },
+      {
+        selector: 'edge',
+        style: {
+          'width': 2,
+          'line-color': '#FFF',
+          'target-arrow-shape': 'triangle'
+        }
+      },
+      {
+        selector: 'edge.branch',
+        style: {
+          'line-style': 'dashed',
+          'line-color': '#CCC'
+        }
+      }
     ],
     layout: { name: 'grid' }
   });
 
-  cy.on('tap', 'node', (evt) => {
-    const newId = `n${Date.now()}`;
-    cy.add([
-      { data: { id: newId, label: 'New Branch' }, classes: 'grok' },
-      { data: { source: evt.target.id(), target: newId }, classes: 'branch' }
-    ]);
-    cy.layout({ name: 'grid' }).run();
+  // Function to render node content (text field and buttons)
+  function renderNodeContent(node) {
+    const div = document.createElement('div');
+    div.className = 'node-container';
+    div.style.position = 'absolute';
+    div.style.left = node.renderedPosition('x') - 100 + 'px'; // Center the div
+    div.style.top = node.renderedPosition('y') - 50 + 'px';
+
+    const textarea = document.createElement('textarea');
+    textarea.className = 'node-textarea';
+    textarea.value = node.data('text') || '';
+    textarea.addEventListener('input', (e) => {
+      node.data('text', e.target.value);
+    });
+
+    const buttonsDiv = document.createElement('div');
+    buttonsDiv.className = 'node-buttons';
+
+    const addButton = document.createElement('button');
+    addButton.className = 'node-button';
+    addButton.innerText = '+';
+    addButton.addEventListener('click', () => {
+      const newId = `n${Date.now()}`;
+      cy.add([
+        { data: { id: newId, text: 'LLM\'s answer' } },
+        { data: { source: node.id(), target: newId } }
+      ]);
+      cy.layout({ name: 'grid' }).run();
+    });
+
+    const branchButton = document.createElement('button');
+    branchButton.className = 'node-button';
+    branchButton.innerText = '#';
+    branchButton.addEventListener('click', () => {
+      const newId = `n${Date.now()}`;
+      cy.add([
+        { data: { id: newId, text: 'Sub-thread' } },
+        { data: { source: node.id(), target: newId }, classes: 'branch' }
+      ]);
+      cy.layout({ name: 'grid' }).run();
+    });
+
+    buttonsDiv.appendChild(addButton);
+    buttonsDiv.appendChild(branchButton);
+    div.appendChild(textarea);
+    div.appendChild(buttonsDiv);
+    document.body.appendChild(div);
+
+    // Update position on pan/zoom
+    node.on('position', () => {
+      div.style.left = node.renderedPosition('x') - 100 + 'px';
+      div.style.top = node.renderedPosition('y') - 50 + 'px';
+    });
+
+    cy.on('pan zoom', () => {
+      div.style.left = node.renderedPosition('x') - 100 + 'px';
+      div.style.top = node.renderedPosition('y') - 50 + 'px';
+    });
+
+    // Remove the div when the node is removed
+    node.on('remove', () => {
+      div.remove();
+    });
+
+    return div;
+  }
+
+  // Render HTML content for all nodes
+  cy.nodes().forEach(node => renderNodeContent(node));
+
+  // Re-render on layout changes
+  cy.on('layoutstop', () => {
+    cy.nodes().forEach(node => {
+      const div = document.querySelector(`.node-container[data-id="${node.id()}"]`);
+      if (div) {
+        div.style.left = node.renderedPosition('x') - 100 + 'px';
+        div.style.top = node.renderedPosition('y') - 50 + 'px';
+      }
+    });
+  });
+
+  // Add new nodes with HTML content
+  cy.on('add', 'node', (evt) => {
+    const node = evt.target;
+    if (!document.querySelector(`.node-container[data-id="${node.id()}"]`)) {
+      renderNodeContent(node);
+    }
   });
 });
