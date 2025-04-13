@@ -2,11 +2,27 @@
 <html>
 <head>
   <title>DAGGER Mini MVP</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
   <div id="cy"></div>
-  <script src="node_modules/cytoscape/dist/cytoscape.min.js"></script>
+  
+  <!-- Import libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.30.2/cytoscape.min.js"></script>
+  
+  <!-- Import models -->
+  <script src="models/GraphModel.js"></script>
+  
+  <!-- Import views -->
+  <script src="views/CytoscapeAdapter.js"></script>
+  <script src="views/UIComponents.js"></script>
+  
+  <!-- Import controllers -->
+  <script src="controllers/LayoutManager.js"></script>
+  <script src="controllers/EventHandler.js"></script>
+  <script src="controllers/StateManager.js"></script>
+  
+  <!-- Main application -->
   <script src="app.js"></script>
 </body>
 </html>

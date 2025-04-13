@@ -1,0 +1,199 @@
+/* styles/style.css - Enhanced styling for DAGGER */
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background: #121212;
+  color: #ffffff;
+}
+
+#cy {
+  width: 100%;
+  height: 100vh;
+  background: #1A1A1A;
+}
+
+/* Node container styling */
+.node-container {
+  width: 200px;
+  height: 120px;
+  background: #333;
+  border: 1px solid #FFF;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Node title styling */
+.node-title {
+  width: 100%;
+  background: #444;
+  color: #FFF;
+  text-align: center;
+  padding: 4px 0;
+  font-size: 12px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  border-bottom: 1px solid #555;
+}
+
+/* Textarea styling */
+.node-textarea {
+  width: 180px;
+  height: 60px;
+  background: #2A2A2A;
+  color: #FFF;
+  border: none;
+  resize: none;
+  font-size: 12px;
+  padding: 5px;
+  margin: 5px 0;
+  border-radius: 3px;
+}
+
+/* Button container styling */
+.node-buttons {
+  position: absolute;
+  bottom: 5px;
+  display: flex;
+  gap: 5px;
+}
+
+/* Button styling */
+.node-button {
+  width: 24px;
+  height: 24px;
+  background: #555;
+  color: #FFF;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+/* Button hover effects */
+.node-button:hover:not(:disabled) {
+  background: #777;
+}
+
+/* Button disabled state */
+.node-button:disabled {
+  background: #444;
+  color: #888;
+  cursor: not-allowed;
+}
+
+/* Specific button styling */
+.add-button {
+  background: #2e7d32; /* Green */
+}
+
+.add-button:hover:not(:disabled) {
+  background: #388e3c;
+}
+
+.branch-button {
+  background: #1976d2; /* Blue */
+}
+
+.branch-button:hover {
+  background: #2196f3;
+}
+
+.delete-button {
+  background: #c62828; /* Red */
+}
+
+.delete-button:hover {
+  background: #e53935;
+}
+
+/* Metadata display styling (for future use) */
+.node-metadata {
+  font-size: 10px;
+  color: #AAA;
+  width: 180px;
+  padding: 2px 5px;
+  background: #2A2A2A;
+  border-radius: 3px;
+  margin-top: 2px;
+}
+
+.metadata-item {
+  display: flex;
+  justify-content: space-between;
+}
+
+.metadata-label {
+  font-weight: bold;
+  color: #CCC;
+}
+
+/* Future navigation bar */
+.navigation-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+  background: #333;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+}
+
+.url-bar {
+  flex-grow: 1;
+  margin: 0 10px;
+  height: 26px;
+  background: #555;
+  border: none;
+  color: white;
+  padding: 0 10px;
+  border-radius: 3px;
+}
+
+.nav-button {
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-button:hover {
+  background: #444;
+}
+
+/* Responsive design adjustments */
+@media (max-width: 768px) {
+  .node-container {
+    width: 150px;
+    height: 100px;
+  }
+  
+  .node-textarea {
+    width: 130px;
+    height: 40px;
+  }
+  
+  .node-button {
+    width: 20px;
+    height: 20px;
+  }
+}
